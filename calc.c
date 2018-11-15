@@ -22,6 +22,24 @@ boolean IsNegative()
 	return (CC == '-');
 }
 
+boolean NextIsAngka()
+{
+	/*kamus lokal*/
+	char temp,itemp,X;
+
+	/*algoritma*/
+	itemp = idx+1;
+	temp = equation[itemp];
+	X = CharToInt(temp);
+
+	if ((X>=0) && (X<=9)){
+		printf("\nNextIsAngka");
+		return true;
+	}
+	else
+		return false;
+}
+
 boolean IsAngka()
 {
 	/*kamus lokal*/
@@ -31,7 +49,7 @@ boolean IsAngka()
 	itemp = idx;
 	temp = equation[itemp];
 	X = CharToInt(temp);
-
+	printf("\nX:%d",X);
 	if ((X>=0) && (X<=9))
 		return true;
 	else
@@ -84,10 +102,69 @@ boolean IsFoundPlusMinus(char* X)
 	}
 	if (!found){
 		*X = 'F';
+		printf("\nPlusMin not found");
+		return false;
+		
+	}
+	else{
+		printf("\nPlusMin found");
+		return true;
+	}
+}
+
+boolean IsFoundKaliBagi(char* X)
+{
+	/*kamus lokal*/
+	int itemp, temp;
+	boolean found;
+
+	/*algoritma*/
+	itemp = idx;
+	found = false;
+	while( (itemp < (strlen(equation))) && (!found) ){
+		temp = equation[itemp];
+		if (( temp == '*')||( temp =='/')){
+			found = true;
+			*X = temp;
+		}
+		else
+			itemp++;
+	}
+	if (!found){
+		*X = 'F';
+		printf("\nKaliBagi not found");
 		return false;
 	}
-	else
+	else{
+		printf("\nKaliBagi found");
 		return true;
+	}
+}
+
+double FactorValue()
+{
+	/*kamus lokal*/
+	double angka,value;
+
+	/*algoritma*/
+	if (IsAngka)
+	{
+		printf("idx %d IsAngka",idx);
+		angka = GetAngka();
+		printf("\nFactorValue1:%f",angka);
+		return angka;
+	}
+
+	if (CC != '(')
+		printf("Expecting Real number or '(' in expression");
+	NextDigit();
+	value = PlusMinus();
+
+	if (CC != ')')
+		printf("Expecting ')' in expression");
+	NextDigit();
+	printf("\nFactorValue2:%f\nidx:%d",value,idx);
+	return value;
 }
 
 double PlusMinus()
@@ -95,31 +172,52 @@ double PlusMinus()
 {
 	/*kamus lokal*/
 	char X,operator;
-	double HasilKaliBagi;
-
+	double value,HasilKaliBagi;
+	boolean Min;
 
 	/*algoritma*/
 	if(IsNegative()){
+		Min = true;
 		NextDigit();
-		result = -1 * result;
 	}
+	else
+		Min = false;
+	value = KaliBagi();
+	if (Min)
+		value = -1 * value;
+
 	while(IsFoundPlusMinus(&X)){
 		operator = X;
 		HasilKaliBagi = KaliBagi();
 		if (operator == '+')
-			result = result + HasilKaliBagi;
+			value = value + HasilKaliBagi;
 		else if (operator == '-')
-			result = result - HasilKaliBagi;
+			value = value - HasilKaliBagi;
 	}
-	return result;
+	printf("\nPlusMinus:%f\nidx:%d",value,idx);
+	return value;
 }
 
 double KaliBagi()
 {
 	/*kamus lokal*/
+	char operator;
+	double value,HasilFactor;
 
 	/*algoritma*/
+	value = FactorValue();
+	while(IsFoundKaliBagi(&operator))
+	{
+		HasilFactor = FactorValue();
+		if (operator == '*')
+			value = value * HasilFactor;
+		else if (operator == '/')
+			value = value / HasilFactor;
+	}
+	printf("\nKaliBagi:%f\nidx:%d",value,idx);
+	return value;
 }
+
 
 double GetAngka()
 //menggabungkan semua karakter digit angka menjadi 1 angka
@@ -129,6 +227,7 @@ double GetAngka()
 	double temp,Bilangan,FPengali;
 	/*algoritma*/
 
+	Bilangan = 0;
 	while (IsAngka()){
 		temp = CharToInt(CC);
 		Bilangan = Bilangan*10 + temp;
@@ -146,7 +245,9 @@ double GetAngka()
 			i++;
 			NextDigit();
 		}
+		NextDigit();
 	}
+	printf("\nGetAngka:%f\nidx:%d",Bilangan,idx);
 	return Bilangan;
 }
 
@@ -161,10 +262,8 @@ void calculate(double* result)
 }
 
 int main(){
-	scanf("%s", &equation);
-	Start();
-	// calculate(&result);
-	result = GetAngka();
-	printf("\n%f",result);
-
+		scanf("%s", &equation);
+		Start();
+		calculate(&result);
+		printf("\n%f",result);
 }
