@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "boolean.h"
 #include "calc.h"
 
@@ -7,6 +8,7 @@
 char equation[50];
 int idx;
 char CC;
+boolean syntax;
 
 //FUNGSI DAN PROSEDUR
 void Start()
@@ -100,22 +102,12 @@ double PlusMinus()
 	char operator;
 
 
-	if (idx==0)
+	if (CC=='-')
 	{
-		if (equation[0]=='-')
-		{
-			min = true;
-		}
+		min = true;
+		Next();
 	}
-	else
-	{
-		if (equation[idx+1]=='-')
-		{
-			min = true;
-			Next();
-		}
-	}
-
+	
 	value = KaliBagi();
 	if (min)
 	{
@@ -148,17 +140,35 @@ double KaliBagi()
 {
 	char operator;
 	double value, HasilProsesKurung;
+	boolean min;
 	value = ProsesKurung();
 	while (equation[idx+1]=='*' || equation[idx+1]=='/')
 	{
 		Next();
 		operator = CC;
 		printf("%c\n",operator);
+		if (equation[idx+1]=='-')
+		{
+			min = true;
+			Next();
+		}
 		HasilProsesKurung = ProsesKurung();
+		if (min)
+		{
+			HasilProsesKurung*=-1;
+		}
 		printf("%f\n", HasilProsesKurung);
 		if (operator == '/')
 		{
-			value = value/HasilProsesKurung;
+			if (HasilProsesKurung==0)
+			{
+				printf("MATH ERROR");
+				exit(0);
+			}
+			else
+			{
+				value = value/HasilProsesKurung;
+			}
 		}
 		else if (operator=='*')
 		{
@@ -185,7 +195,7 @@ double ProsesKurung()
 	}
 	else 
 	{
-		if(equation[idx-1]=='(')
+		if(equation[idx-1]=='(' || equation[idx-1]=='-')
 		{
 			if (IsAngka())
 			{
