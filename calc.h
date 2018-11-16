@@ -3,24 +3,14 @@
 
 #include "boolean.h"
 
-typedef char string[20];
-char CC;
-string equation;
-double hasil;
-int idx;
-double result;
 
-void start();
-void NextDigit();
-boolean IsNegative();
-boolean IsAngka();
-boolean IsFoundPlusMinus();
-char NextOperator();
+void Start();
+void Next();
 int CharToInt(char CC);
-
+boolean IsAngka();
+double GetAngka();
 double PlusMinus();
 double KaliBagi();
-double Kurung();
-double GetAngka();
+double ProsesKurung();
 
 #endif
