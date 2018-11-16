@@ -38,7 +38,6 @@ boolean NextIsAngka()
 	temp=equation[idx+1];
 	if (temp=='0' || temp=='1' || temp=='2' || temp=='3' || temp=='4' || temp=='5' || temp=='6' || temp=='7' || temp=='8' || temp=='9')
 	{
-		printf("true\n");
 		return true;
 	}
 	else
@@ -54,6 +53,7 @@ boolean IsAngka()
 	if (CC=='0' || CC=='1' || CC=='2' || CC=='3' || CC=='4' || CC=='5' ||CC=='6' || CC=='7' || CC=='8' || CC=='9')
 	{
 		return true;
+		printf("IsAngka true dengan CC %c", CC);
 	}
 	else
 	{
@@ -87,7 +87,6 @@ double GetAngka()
 			i++;
 			Next();
 		}
-		Next();
 	}
 	idx-=1;
 	return Bilangan;
@@ -172,38 +171,58 @@ double KaliBagi()
 double ProsesKurung()
 {
 	double angka, value;
-	printf("Sblm Angka %c\n", CC);
-	if (idx==0 && IsAngka()) 
+	if (idx==0) 
 	{
-		printf("idx %d\n", idx);
-		printf("sblm jadi int1 %c\n",CC);
-		angka = GetAngka();
-		printf("nilai %f\n", angka);
-		printf("idx1 %d\n", idx);
-		return angka;
+		if (IsAngka())
+		{
+			printf("idx %d\n", idx);
+			printf("sblm jadi int1 %c\n",CC);
+			angka = GetAngka();
+			printf("nilai %f\n", angka);
+			printf("idx1 %d\n", idx);
+			return angka;
+		}
+	}
+	else 
+	{
+		if(equation[idx-1]=='(')
+		{
+			if (IsAngka())
+			{
+				angka = GetAngka();
+				return angka;
+			}	
+		}
+		if (NextIsAngka())
+		{
+			Next();
+			printf("sblm jadi int2 %c\n",CC);
+			angka = GetAngka();
+			printf("nilai %f\n", angka);
+			return angka;
+		}
 	}
 
-	else if (NextIsAngka())
+	printf("artinya bukan angka\n");
+	if (idx==0)
 	{
-		Next();
-		printf("sblm jadi int2 %c\n",CC);
-		angka = GetAngka();
-		printf("nilai %d\n", angka);
-		return angka;
+		if (equation[idx]!='(')
+		{
+			printf("Expecting real number or '('\n");
+		}	
 	}
-
-	if (equation[idx+1]!='(')
+	else 
 	{
-		printf("Expecting real number or '('\n");
-	}
-	
-	printf("idx %d\n", idx);
-	if(idx!=0)
-	{
-		Next();
+		if (equation[idx+1]!='(')
+		{
+			printf("Expecting real number or '('\n");
+		}
 	}
 	
+	printf("idx2 %d\n", idx);
+	Next();
 	value = PlusMinus();
+	printf("udah kelar ngitung value\n");
 	if (equation[idx+1]!=')')
 	{
 		printf("Expecting ) in expresion\n");
