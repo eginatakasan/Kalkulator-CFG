@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-<<<<<<< HEAD
 #include <math.h>
-=======
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 #include "boolean.h"
 #include "calc.h"
 
@@ -12,12 +9,8 @@
 char equation[50];
 int idx;
 char CC;
-<<<<<<< HEAD
 boolean syntaxerror;
 boolean matherror;
-=======
-boolean syntax;
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 
 //FUNGSI DAN PROSEDUR
 void Start()
@@ -95,16 +88,6 @@ double PlusMinus()
 	boolean min;
 	double value, HasilKaliBagi;
 	char operator;
-<<<<<<< HEAD
-=======
-
-
-	if (CC=='-')
-	{
-		min = true;
-		Next();
-	}
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 	
 	value = KaliBagi();
 
@@ -129,31 +112,20 @@ double PlusMinus()
 double KaliBagi()
 {
 	char operator;
-<<<<<<< HEAD
 	double value, HasilProsesPangkat;
 	boolean min;
 
 	value = Pangkat();
 	
-=======
-	double value, HasilProsesKurung;
-	boolean min;
-	value = ProsesKurung();
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 	while (equation[idx+1]=='*' || equation[idx+1]=='/')
 	{
 		Next();
 		operator = CC;
-<<<<<<< HEAD
-=======
-		printf("%c\n",operator);
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 		if (equation[idx+1]=='-')
 		{
 			min = true;
 			Next();
 		}
-<<<<<<< HEAD
 
 		HasilProsesPangkat = Pangkat();
 		if (min)
@@ -169,24 +141,6 @@ double KaliBagi()
 			else
 			{
 				value = value/HasilProsesPangkat;
-=======
-		HasilProsesKurung = ProsesKurung();
-		if (min)
-		{
-			HasilProsesKurung*=-1;
-		}
-		printf("%f\n", HasilProsesKurung);
-		if (operator == '/')
-		{
-			if (HasilProsesKurung==0)
-			{
-				printf("MATH ERROR");
-				exit(0);
-			}
-			else
-			{
-				value = value/HasilProsesKurung;
->>>>>>> d5bb3138921fe441be89c62ee4b46f54a68e231e
 			}
 		}
 		else if (operator=='*')
