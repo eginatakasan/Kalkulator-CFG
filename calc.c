@@ -88,21 +88,27 @@ double PlusMinus()
 	boolean min;
 	double value, HasilKaliBagi;
 	char operator;
+	int X;
 	
 	value = KaliBagi();
 
 	while (equation[idx+1]=='+' || equation[idx+1]=='-')
 	{
 		Next();
+		X =1;
 		operator = CC;
+		if (equation[idx+1]=='-')
+			X = -1;
+
 		HasilKaliBagi = KaliBagi();
+
 		if (operator == '+')
 		{
-			value = value + HasilKaliBagi;
+			value = value + HasilKaliBagi*X;
 		}
 		else if (operator == '-')
 		{
-			value = value - HasilKaliBagi;
+			value = value - HasilKaliBagi*X;
 		}
 	}
 	return value;
